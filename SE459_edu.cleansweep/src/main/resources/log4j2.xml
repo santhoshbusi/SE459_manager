@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="[%-5level] %d{yyyy.MM.dd HH:mm:ss} [%C{1}] %M - %msg%n" />
+		</Console>
+		
+		<RollingFile name="rollingfile" fileName="./logs/cleansweep-control.log"
+			filePattern="./logs/cleansweep-control-%d{yyyyMMddHHmmss}.log">
+			<PatternLayout>
+				<pattern>
+					[%-5level] %d{yyyy.MM.dd HH:mm:ss} [%C{1}] %M - %msg%n
+				</pattern>
+			</PatternLayout>
+			<Policies>
+			</Policies>
+		</RollingFile>
+	</Appenders>
+	
+	<Loggers>
+		<Logger name="edu.baseplan.floor.BareFloorCell" level="info" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Logger>
+		<Logger name="edu.baseplan.floor.AbstractCell" level="info" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Logger>
+		<Logger name="edu.baseplan.floor.DoorCell" level="debug" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Logger>
+		<Logger name="edu.baseplan.floor.FloorNavigationProxy" level="debug" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Logger>
+		<Logger name="edu.cleansweep.controlsystem.power.PowerState" level="info" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Logger>
+		<Logger name="edu.cleansweep.controlsystem.power.ChargingPowerState" level="info" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Logger>
+			<Logger name="edu.cleansweep.controlsystem.power.DischargingPowerState" level="info" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Logger>
+			<Logger name="edu.cleansweep.controlsystem.power.FullyChargedPowerState" level="info" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Logger>
+			<Logger name="edu.cleansweep.controlsystem.power.FullyDepletedPowerState" level="info" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Logger>
+		<Logger name="edu.cleansweep.controlsystem.power.PowerManager" level="info" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Logger>
+		<Root level="error">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="rollingfile" />
+		</Root>
+	</Loggers>
+</Configuration>

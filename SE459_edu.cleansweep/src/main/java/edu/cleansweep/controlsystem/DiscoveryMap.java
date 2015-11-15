@@ -1,6 +1,11 @@
 package edu.cleansweep.controlsystem;
 import java.util.ArrayList;
 
+import edu.baseplan.floor.Location;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+
 /**
  * This map is esentially a collection of methods wrapped around an array list that
  * represents what the control system has discovered.
@@ -8,7 +13,8 @@ import java.util.ArrayList;
  */
 
 public class DiscoveryMap {
-	
+
+	private static final Logger logger = LogManager.getLogger(DiscoveryMap.class.getName());
 	private ArrayList<NavigationCell> cellMap;
 	
 	public DiscoveryMap(){
@@ -42,6 +48,24 @@ public class DiscoveryMap {
 			newNavCell = new NavigationCell(_x, _y, _layer);
 			cellMap.add(newNavCell);
 		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("addNewNavigationCell() was called: return newNavCell-" + newNavCell);
+			}
+
+		return newNavCell;
+	}
+	
+	public NavigationCell addNewNavigationCell(int _x, int _y, int _layer, Location _locationData){
+		
+		NavigationCell newNavCell = null;
+		if(!checkMap(_x, _y)){
+			newNavCell = new NavigationCell(_x, _y, _layer, _locationData);
+			cellMap.add(newNavCell);
+		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("addNewNavigationCell() was called: return newNavCell-" + newNavCell);
+			}
+
 		return newNavCell;
 	}
 	
@@ -85,6 +109,10 @@ public class DiscoveryMap {
 				maxNavLayer = nav.getNavLayer();
 			}
 		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("getMaxNavLayer() was called: return maxNavLayer" + maxNavLayer);
+			}
+
 		return maxNavLayer;
 	}
 	
@@ -102,6 +130,9 @@ public class DiscoveryMap {
 				topLayerList.add(nav);
 			}
 		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("getTopLayerCells() was called: return topLayerList" + topLayerList);
+			}
 		return topLayerList;
 	}
 	
@@ -118,6 +149,50 @@ public class DiscoveryMap {
 		return null;
 	}
 	
+	/**
+	 * Retrieves the Array list of Navigation Cells
+	 * @return The Navigation Cell that matches input coordinates.
+	 */
+	public ArrayList<NavigationCell> getNavigationCells(){
+		if (logger.isDebugEnabled()) {
+			logger.debug("getNavigationCells() was called: return cellMap-" + cellMap);
+			}
+		return cellMap;
+	}
+	
+	/**
+	 * Retrieves the Number of dirty cells left on the floor plan
+	 * (based on whether or not we cleaned it on the last visit)
+	 * @return The Count of [potentially] dirty cells
+	 */
+	public int countDirtyCells(){
+		int cnt = 0;
+		for(NavigationCell nav: cellMap){
+			if(nav.isCleanedLastVisit()){
+				cnt++;
+			}
+		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("countDirtyCells() was called. return - " + cnt);
+			}
+
+		return cnt;
+	}
+	
+	/**
+	 * Iterates through internal list of navigation areas to see if there
+	 * are any remaining cells that might be dirty
+	 * (based on whether or not we cleaned it on the last visit)
+	 * @return boolen indicating if dirty cells remain
+	 */
+	public boolean dirtyCellsRemain(){
+		for(NavigationCell nav: cellMap){
+			if(nav.isCleanedLastVisit()){
+				return true;
+			}
+		}
+		return false;
+	}
 	/**
 	 * Prints the current map
 	 */
